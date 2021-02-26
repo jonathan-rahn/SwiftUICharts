@@ -13,6 +13,10 @@ struct LegendView: View {
     init(dataPoints: [DataPoint]) {
         legends = Array(Set(dataPoints.map { $0.legend })).sorted()
     }
+    
+    init(legends: [Legend]) {
+        self.legends = legends.sorted()
+    }
 
     var body: some View {
         LazyVGrid(columns: [.init(.adaptive(minimum: 100))], alignment: .leading) {

@@ -56,6 +56,11 @@ public struct DataSeries: Identifiable {
     let dataPoints: [DataPoint]
     let legend: Legend
     public let id = UUID()
+    
+    public init(dataPoints: [DataPoint], legend: Legend) {
+        self.dataPoints = dataPoints
+        self.legend = legend
+    }
 }
 
 /// SwiftUI view that draws data points by drawing a line.

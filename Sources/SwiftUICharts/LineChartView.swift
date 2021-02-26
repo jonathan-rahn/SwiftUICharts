@@ -9,12 +9,18 @@ import SwiftUI
 
 /// Type that defines a line chart style.
 public struct LineChartStyle: ChartStyle {
+    
+    public enum LineStyle {
+        case fill, line
+    }
+    
     public let lineMinHeight: CGFloat
     public let showAxis: Bool
     public let axisLeadingPadding: CGFloat
     public let showLabels: Bool
     public let labelCount: Int?
     public let showLegends: Bool
+    public let lineStyle: LineStyle
 
     /**
      Creates new line chart style with the following parameters.
@@ -34,7 +40,8 @@ public struct LineChartStyle: ChartStyle {
         axisLeadingPadding: CGFloat = 0,
         showLabels: Bool = true,
         labelCount: Int? = nil,
-        showLegends: Bool = true
+        showLegends: Bool = true,
+        lineStyle: LineStyle = .fill
     ) {
         self.lineMinHeight = lineMinHeight
         self.showAxis = showAxis
@@ -42,6 +49,7 @@ public struct LineChartStyle: ChartStyle {
         self.showLabels = showLabels
         self.labelCount = labelCount
         self.showLegends = showLegends
+        self.lineStyle = lineStyle
     }
 }
 
@@ -91,7 +99,7 @@ public struct LineChartView: View {
     public var body: some View {
         VStack {
             HStack(spacing: 0) {
-                LineChartShape(dataPoints: dataPoints)
+                LineChartShape(dataPoints: dataPoints, lineStyle: style.lineStyle)
                     .fill(gradient)
                     .frame(minHeight: style.lineMinHeight)
                     .background(grid)
@@ -123,7 +131,7 @@ struct LineChartView_Previews: PreviewProvider {
         HStack {
             LineChartView(dataPoints: DataPoint.mock)
             LineChartView(dataPoints: DataPoint.mock)
-        }.chartStyle(LineChartStyle(showAxis: false, showLabels: false))
+        }.chartStyle(LineChartStyle(showAxis: false, showLabels: false, lineStyle: .fill))
     }
 }
 #endif

@@ -15,6 +15,7 @@ public struct LineChartStyle: ChartStyle {
     public let showLabels: Bool
     public let labelCount: Int?
     public let showLegends: Bool
+    public let closePath: Bool
 
     /**
      Creates new line chart style with the following parameters.
@@ -34,7 +35,8 @@ public struct LineChartStyle: ChartStyle {
         axisLeadingPadding: CGFloat = 0,
         showLabels: Bool = true,
         labelCount: Int? = nil,
-        showLegends: Bool = true
+        showLegends: Bool = true,
+        closePath: Bool = true
     ) {
         self.lineMinHeight = lineMinHeight
         self.showAxis = showAxis
@@ -42,6 +44,7 @@ public struct LineChartStyle: ChartStyle {
         self.showLabels = showLabels
         self.labelCount = labelCount
         self.showLegends = showLegends
+        self.closePath = closePath
     }
 }
 
@@ -91,7 +94,7 @@ public struct LineChartView: View {
     public var body: some View {
         VStack {
             HStack(spacing: 0) {
-                LineChartShape(dataPoints: dataPoints)
+                LineChartShape(dataPoints: dataPoints, closePath: style.closePath)
                     .fill(gradient)
                     .frame(minHeight: style.lineMinHeight)
                     .background(grid)

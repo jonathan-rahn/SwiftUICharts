@@ -11,7 +11,7 @@ import SwiftUI
 public struct LineChartStyle: ChartStyle {
     
     public enum LineStyle {
-        case fill, line
+        case fill, line(StrokeStyle)
     }
     
     public let lineMinHeight: CGFloat
@@ -99,10 +99,20 @@ public struct LineChartView: View {
     public var body: some View {
         VStack {
             HStack(spacing: 0) {
-                LineChartShape(dataPoints: dataPoints, lineStyle: style.lineStyle)
-                    .fill(gradient)
-                    .frame(minHeight: style.lineMinHeight)
-                    .background(grid)
+                Group {
+                    switch style.lineStyle {
+                    case .fill:
+                        LineChartShape(dataPoints: dataPoints, closePath: true)
+                            .fill(gradient)
+                    case .line:
+                        LineChartShape(dataPoints: dataPoints, closePath: false)
+                            .stroke(gradient, style: StrokeStyle(lineWidth: 3, lineJoin: .round))
+                        
+                    }
+                }
+                .drawingGroup()
+                .frame(minHeight: style.lineMinHeight)
+                .background(grid)
 
                 if style.showAxis {
                     AxisView(dataPoints: dataPoints)
@@ -130,8 +140,9 @@ struct LineChartView_Previews: PreviewProvider {
     static var previews: some View {
         HStack {
             LineChartView(dataPoints: DataPoint.mock)
+                .chartStyle(LineChartStyle(showAxis: false, showLabels: false, lineStyle: .line(StrokeStyle())))
             LineChartView(dataPoints: DataPoint.mock)
-        }.chartStyle(LineChartStyle(showAxis: false, showLabels: false, lineStyle: .fill))
+        }.chartStyle(LineChartStyle(showAxis: false, showLabels: false))
     }
 }
 #endif
